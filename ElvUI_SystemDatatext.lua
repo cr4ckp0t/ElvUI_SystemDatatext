@@ -4,7 +4,7 @@
 local Frame = CreateFrame("frame")
 local E, _, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule("DataTexts")
-local L = LibStub("AceLocale-3.0"):GetLocale("ElvUI_SystemDT", false)
+local L = LibStub("AceLocale-3.0"):GetLocale("ElvUI_SystemDatatext", false)
 local EP = LibStub("LibElvUIPlugin-1.0")
 
 local format = string.format
