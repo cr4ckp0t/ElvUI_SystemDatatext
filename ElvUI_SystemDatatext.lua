@@ -1,7 +1,6 @@
 -- ElvUI Improved System Datatext
 -- By: Lockslap, US - Bleeding Hollow
 -- Basic functionality is from ElvUI's system datatext, with some improvements by myself.
-local Frame = CreateFrame("frame")
 local E, _, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule("DataTexts")
 local L = LibStub("AceLocale-3.0"):GetLocale("ElvUI_SystemDatatext", false)
