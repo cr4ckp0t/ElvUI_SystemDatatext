@@ -1,7 +1,7 @@
 ## Interface: 80100
 ## Author: Lockslap
 ## Title: |cff1784d1ElvUI|r System Datatext
-## Version: 2.0.3
+## Version: 2.1.0
 ## Notes: An improved system datatext.
 ## RequiredDeps: ElvUI
 

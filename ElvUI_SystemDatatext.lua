@@ -20,6 +20,7 @@ local statusColors = {
 	"|cffD80909"
 }
 
+local Frame = CreateFrame("Frame", "ElvUI_SystemDatatext", E.UIParent, "UIDropDownMenuTemplate")
 local enteredFrame = false
 local bandwidthString = "%.2f Mbps"
 local percentageString = "%.2f%%"
@@ -27,6 +28,12 @@ local homeLatencyString = "%d ms"
 local kiloByteString = "%d kb"
 local megaByteString = "%.2f mb"
 local freedString = ""
+
+-- WOW api
+local MicroButtonTooltipText = _G.MicroButtonTooltipText
+local ToggleCharacter, ToggleSpellBook, ToggleAchievementFrame, ToggleQuestLog, ToggleGuildFrame, ToggleLFDParentFrame, ToggleEncounterJournal, ToggleCollectionsJournal, ToggleStoreUI, ToggleHelpFrame = ToggleCharacter, ToggleSpellBook, ToggleAchievementFrame, ToggleQuestLog, ToggleGuildFrame, ToggleLFDParentFrame, ToggleEncounterJournal, ToggleCollectionsJournal, ToggleStoreUI, ToggleHelpFrame
+local C_StorePublic_IsEnabled = C_StorePublic.IsEnabled
+
 
 -- static popup
 StaticPopupDialogs["CONFIRM_RELOAD_UI"] = {
@@ -167,8 +174,8 @@ local function OnEnter(self)
 	
 	DT.tooltip:AddLine(" ")
 	DT.tooltip:AddDoubleLine(L["Left Click:"], L["Garbage Collect"], 0.7, 0.7, 1.0, 1, 1, 1)
-	DT.tooltip:AddDoubleLine(L["Right Click:"], L["Reload UI"], 0.7, 0.7, 1.0, 1, 1, 1)
-	
+	DT.tooltip:AddDoubleLine(L["Right Click:"], L["Open Game Menu"], 0.7, 0.7, 1.0, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Shift + Right Click:"], L["Reload UI"], 0.7, 0.7, 1.0, 1, 1, 1)	
 	DT.tooltip:Show()	
 end
 
@@ -230,9 +237,164 @@ local function Click(self, button)
 			DEFAULT_CHAT_FRAME:AddMessage(freedString:format(FormatMemory(preCollect - postCollect)), 1.0, 1.0, 1.0)
 		end
 	elseif button == "RightButton" then
-		StaticPopup_Show("CONFIRM_RELOAD_UI")
+		if IsShiftKeyDown() then
+			StaticPopup_Show("CONFIRM_RELOAD_UI")
+		else
+			DT.tooltip:Hide()
+			ToggleDropDownMenu(1, nil, Frame, self, 0, 0)
+		end
 	end
 end
+
+local function CreateMenu(self, level)
+	-- character frame
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(CHARACTER_BUTTON, "TOGGLECHARACTER0"),
+		func = function() ToggleFrame(_G["CharacterFrame"]) end,
+	})
+
+	-- spellbook
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(SPELLBOOK_ABILITIES_BUTTON, "TOGGLESPELLBOOK"),
+		func = function() ToggleFrame(_G["SpellBookFrame"]) end,
+	})
+
+	-- talents
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(TALENTS_BUTTON, "TOGGLETALENTS"),
+		func = function()
+			-- only players > level 10 have talents
+			if UnitLevel("player") >= 10 then
+				if not _G["PlayerTalentFrame"] then LoadAddOn("Blizzard_TalentUI") end
+				ToggleFrame(_G["PlayerTalentFrame"])
+			end
+		end,
+	})
+
+	-- achievements
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(ACHIEVEMENT_BUTTON, "TOGGLEACHIEVEMENT"),
+		func = function() ToggleAchievementFrame() end,
+	})
+
+	-- quest log
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(QUESTLOG_BUTTON, "TOGGLEQUESTLOG"),
+		func = function() ToggleQuestLog() end,
+	})
+
+	-- guild
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(GUILD, "TOGGLEGUILDTAB"),
+		func = function() ToggleGuildFrame() end,
+	})
+
+	-- dungeons
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(DUNGEONS_BUTTON, "TOGGLEGROUPFINDER"),
+		func = function() ToggleLFDParentFrame() end,
+	})
+
+	-- collections (pets, toys, and mounts)
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(COLLECTIONS, "TOGGLECOLLECTIONS"),
+		func = function() ToggleCollectionsJournal() end,
+	})
+
+	-- encounters
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = MicroButtonTooltipText(ENCOUNTER_JOURNAL, "TOGGLEENCOUNTERJOURNAL"),
+		func = function() ToggleEncounterJournal() end,
+	})
+
+	if not C_StorePublic_IsEnabled() and GetCurrentRegionName() == "CN" then
+		-- help button (for disable store or chinese region)
+		UIDropDownMenu_AddButton({
+			hasArrow = false,
+			notCheckable = true,
+			colorCode = "|cffffffff",
+			text = HELP_BUTTON,
+			func = function() ToggleHelpFrame() end,
+		})
+	else
+		-- store button for everyone else
+		UIDropDownMenu_AddButton({
+			hasArrow = false,
+			notCheckable = true,
+			colorCode = "|cffffffff",
+			text = BLIZZARD_STORE,
+			func = function() ToggleStoreUI() end,
+		})
+	end
+
+	-- system menu
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = L["Game Menu"],
+		func = function()
+			if _G["GameMenuFrame"]:IsShown() then
+				HideUIPanel(_G["GameMenuFrame"])
+			else
+				ShowUIPanel(_G["GameMenuFrame"])
+			end
+		end,
+	})
+
+	-- elvui config
+	UIDropDownMenu_AddButton({
+		hasArrow = false,
+		notCheckable = true,
+		colorCode = "|cffffffff",
+		text = L["ElvUI Config"],
+		func = function() E:ToggleConfig() end,
+	})
+
+	if IsAddOnLoaded("ElvUI_ChatTweaks") then
+		UIDropDownMenu_AddButton({
+			hasArrow = false,
+			notCheckable = true,
+			colorCode = "|cffffffff",
+			text = L["ElvUI Chat Tweaks"],
+			func = function() ElvUI_ChatTweaks:ToggleConfig() end,
+		})
+	end
+end
+
+function Frame:PLAYER_ENTERING_WORLD()
+	self.initialize = CreateMenu
+	self.displayMode = "MENU"
+end
+Frame:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
+Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 local function ValueColorUpdate(hex, r, g, b)
 	freedString = join("", hex, "ElvUI|r", " ", L["Garbage Collection Freed"], " ", "|cff00ff00%s|r")  
