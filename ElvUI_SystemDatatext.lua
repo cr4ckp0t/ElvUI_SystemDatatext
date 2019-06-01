@@ -370,15 +370,17 @@ local function CreateMenu(self, level)
 	})
 
 	-- elvui config
-	UIDropDownMenu_AddButton({
-		hasArrow = false,
-		notCheckable = true,
-		colorCode = "|cffffffff",
-		text = L["ElvUI Config"],
-		func = function() E:ToggleConfig() end,
-	})
+	if E.db.sysdt.showElvui and E then
+		UIDropDownMenu_AddButton({
+			hasArrow = false,
+			notCheckable = true,
+			colorCode = "|cffffffff",
+			text = L["ElvUI Config"],
+			func = function() E:ToggleOptionsUI() end,
+		})
+	end
 
-	if IsAddOnLoaded("ElvUI_ChatTweaks") then
+	if E.db.sysdt.showElvuict and IsAddOnLoaded("ElvUI_ChatTweaks") and ElvUI_ChatTweaks then
 		UIDropDownMenu_AddButton({
 			hasArrow = false,
 			notCheckable = true,
@@ -402,12 +404,14 @@ end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 
 P["sysdt"] = {
-	["maxAddons"]		= 25,
-	["showFPS"]			= true,
-	["showMS"]			= true,
-	["latency"]			= "home",
-	["showMemory"]		= false,
-	["announceFreed"]	= true,
+	["maxAddons"] = 25,
+	["showFPS"] = true,
+	["showMS"] = true,
+	["latency"] = "home",
+	["showMemory"] = false,
+	["announceFreed"] = true,
+	["showElvui"] = true,
+	["showElvuict"] = true,
 }
 
 local function InjectOptions()
@@ -480,6 +484,18 @@ local function InjectOptions()
 					["home"] = L["Home"],
 					["world"] = L["World"],
 				}
+			},
+			showElvui = {
+				type = "toggle",
+				order = 7,
+				name = L["Show ElvUI"],
+				desc = L["Add ElvUI Config option to the micro menu."],
+			},
+			showElvuict = {
+				type = "toggle",
+				order = 8,
+				name = L["Show ECT"],
+				desc = L["Add ElvUI Chat Tweaks Config option to the micro menu."],
 			},
 		}
 	}
