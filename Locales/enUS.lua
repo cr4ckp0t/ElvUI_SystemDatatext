@@ -10,6 +10,8 @@ local L = AceLocale:NewLocale("ElvUI_SystemDatatext", "enUS", true, debug)
 if not L then return end
 
 L["(Hold Shift) Memory Usage"] = true
+L["Add ElvUI Chat Tweaks Config option to the micro menu."] = true
+L["Add ElvUI Config option to the micro menu."] = true
 L["Announce Freed"] = true
 L["Announce how much memory was freed by the garbage collection."] = true
 L["Bandwidth"] = true
@@ -37,6 +39,8 @@ L["Reload UI"] = true
 L["Reload UI?"] = true
 L["Right Click:"] = true
 L["Shift + Right Click:"] = true
+L["Show ECT"] = true
+L["Show ElvUI"] = true
 L["Show FPS on the datatext."] = true
 L["Show FPS"] = true
 L["Show Latency"] = true
