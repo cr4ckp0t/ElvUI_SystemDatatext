@@ -1,10 +1,44 @@
 -- ElvUI Improved System Datatext
--- By: Lockslap, US - Bleeding Hollow
+-- By: Crackpotx, US - Bleeding Hollow
 -- Basic functionality is from ElvUI's system datatext, with some improvements by myself.
 local E, _, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule("DataTexts")
 local L = LibStub("AceLocale-3.0"):GetLocale("ElvUI_SystemDatatext", false)
 local EP = LibStub("LibElvUIPlugin-1.0")
+
+local unpack = _G["unpack"]
+local CreateFrame = _G["CreateFrame"]
+local ReloadUI = _G["ReloadUI"]
+local GetNumAddOns = _G["GetNumAddOns"]
+local GetAddOnInfo = _G["GetAddOnInfo"]
+local IsAddOnLoaded = _G["IsAddOnLoaded"]
+local UpdateAddOnMemoryUsage = _G["UpdateAddOnMemoryUsage"]
+local GetAddOnMemoryUsage = _G["GetAddOnMemoryUsage"]
+local UpdateAddOnCPUUsage = _G["UpdateAddOnCPUUsage"]
+local GetAddOnCPUUsage = _G["GetAddOnCPUUsage"]
+local GetCVar = _G["GetCVar"]
+local GetAvailableBandwidth = _G["GetAvailableBandwidth"]
+local GetNetStats = _G["GetNetStats"]
+local GetDownloadedPercentage = _G["GetDownloadedPercentage"]
+local IsShiftKeyDown = _G["IsShiftKeyDown"]
+local GetFramerate = _G["GetFramerate"]
+local collectgarbage = _G["collectgarbage"]
+local StaticPopup_Show = _G["StaticPopup_Show"]
+local ToggleDropDownMenu = _G["ToggleDropDownMenu"]
+local UIDropDownMenu_AddButton = _G["UIDropDownMenu_AddButton"]
+local ToggleFrame = _G["ToggleFrame"]
+local LoadAddOn = _G["LoadAddOn"]
+local ToggleAchievementFrame = _G["ToggleAchievementFrame"]
+local ToggleQuestLog = _G["ToggleQuestLog"]
+local ToggleGuildFrame = _G["ToggleGuildFrame"]
+local ToggleLFDParentFrame = _G["ToggleLFDParentFrame"]
+local ToggleCollectionsJournal = _G["ToggleCollectionsJournal"]
+local ToggleEncounterJournal = _G["ToggleEncounterJournal"]
+local GetCurrentRegionName = _G["GetCurrentRegionName"]
+local ToggleHelpFrame = _G["ToggleHelpFrame"]
+local ToggleStoreUI = _G["ToggleStoreUI"]
+local HideUIPanel = _G["HideUIPanel"]
+local ShowUIPanel = _G["ShowUIPanel"]
 
 local format = string.format
 local sort = table.sort
@@ -415,29 +449,29 @@ P["sysdt"] = {
 }
 
 local function InjectOptions()
-	if not E.Options.args.lockslap then
-		E.Options.args.lockslap = {
+	if not E.Options.args.Crackpotx then
+		E.Options.args.Crackpotx = {
 			type = "group",
 			order = -2,
-			name = L["Plugins by |cff9382c9Lockslap|r"],
+			name = L["Plugins by |cff9382c9Crackpotx|r"],
 			args = {
 				thanks = {
 					type = "description",
 					order = 1,
-					name = L["Thanks for using and supporting my work!  -- |cff9382c9Lockslap|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
+					name = L["Thanks for using and supporting my work!  -- |cff9382c9Crackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
 				},
 			},
 		}
-	elseif not E.Options.args.lockslap.args.thanks then
-		E.Options.args.lockslap.args.thanks = {
+	elseif not E.Options.args.Crackpotx.args.thanks then
+		E.Options.args.Crackpotx.args.thanks = {
 			type = "description",
 			order = 1,
-			name = L["Thanks for using and supporting my work!  -- |cff9382c9Lockslap|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
+			name = L["Thanks for using and supporting my work!  -- |cff9382c9Crackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
 		}
 	end
 	
 	-- inject our config into elvui's config window
-	E.Options.args.lockslap.args.impsysdt = {
+	E.Options.args.Crackpotx.args.impsysdt = {
 		type = "group",
 		name = L["Improved System Datatext"],
 		get = function(info) return E.db.sysdt[info[#info]] end,

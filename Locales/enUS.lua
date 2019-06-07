@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- ElvUI_SystemDatatext By Lockslap (US, Bleeding Hollow)
+-- ElvUI_SystemDatatext By Crackpotx (US, Lightbringer)
 -------------------------------------------------------------------------------
 local debug = false
 --@debug@
@@ -34,7 +34,7 @@ L["Max Addons"] = true
 L["Maximum number of addons to show in the tooltip."] = true
 L["No"] = true
 L["Open Game Menu"] = true
-L["Plugins by |cff9382c9Lockslap|r"] = true
+L["Plugins by |cff9382c9Crackpotx|r"] = true
 L["Reload UI"] = true
 L["Reload UI?"] = true
 L["Right Click:"] = true
@@ -47,7 +47,7 @@ L["Show Latency"] = true
 L["Show Memory"] = true
 L["Show latency on the datatext."] = true
 L["Show total addon memory on the datatext."] = true
-L["Thanks for using and supporting my work!  -- |cff9382c9Lockslap|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."] = true
+L["Thanks for using and supporting my work!  -- |cff9382c9Crackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."] = true
 L["Total Addons:"] = true
 L["Total CPU:"] = true
 L["Total Memory:"] = true

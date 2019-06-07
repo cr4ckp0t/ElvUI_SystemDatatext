@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- ElvUI Improved System Datatext By Lockslap (US, Bleeding Hollow)
+-- ElvUI Improved System Datatext By Crackpotx (US, Lightbringer)
 --------------------------------------------------------------------------------
 local AceLocale = LibStub:GetLibrary("AceLocale-3.0")
 local L = AceLocale:NewLocale("ElvUI_SystemDatatext", "esES", false)
