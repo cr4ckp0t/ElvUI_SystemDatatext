@@ -1,7 +1,7 @@
-## Interface: 80205
+## Interface: 80300
 ## Author: Crackpotx
 ## Title: |cff1784d1ElvUI|r System Datatext
-## Version: 2.2.2
+## Version: 2.2.3
 ## Notes: An improved system datatext.
 ## RequiredDeps: ElvUI
 
