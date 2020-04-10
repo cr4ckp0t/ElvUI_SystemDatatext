@@ -56,6 +56,7 @@ local statusColors = {
 
 local Frame = CreateFrame("Frame", "ElvUI_SystemDatatext", E.UIParent, "UIDropDownMenuTemplate")
 local enteredFrame = false
+local lastPanel
 local bandwidthString = "%.2f Mbps"
 local percentageString = "%.2f%%"
 local homeLatencyString = "%d ms"
@@ -218,7 +219,7 @@ local function OnLeave(self)
 	DT.tooltip:Hide()
 end
 
-local function Update(self, t)
+local function OnUpdate(self, t)
 	int = int - t
 	int2 = int2 - t
 	
@@ -261,11 +262,11 @@ local function Update(self, t)
 	end
 end
 
-local function Click(self, button)
+local function OnClick(self, button)
 	if button == "LeftButton" then
 		local preCollect = UpdateMemory()
 		collectgarbage("collect")
-		Update(self, 20)
+		OnUpdate(self, 20)
 		local postCollect = UpdateMemory()
 		if E.db.sysdt.announceFreed then
 			DEFAULT_CHAT_FRAME:AddMessage(freedString:format(FormatMemory(preCollect - postCollect)), 1.0, 1.0, 1.0)
@@ -425,17 +426,23 @@ local function CreateMenu(self, level)
 	end
 end
 
-function Frame:PLAYER_ENTERING_WORLD()
-	self.initialize = CreateMenu
-	self.displayMode = "MENU"
+local function OnEvent(self, event, ...)
+	lastPanel = self
+
+	if event == "PLAYER_ENTERING_WORLD" then
+		Frame.initialize = CreateMenu
+		Frame.displayMode = "MENU"
+	end
 end
-Frame:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
-Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 local function ValueColorUpdate(hex, r, g, b)
-	freedString = join("", hex, "ElvUI|r", " ", L["Garbage Collection Freed"], " ", "|cff00ff00%s|r")  
+	freedString = join("", hex, "ElvUI|r", " ", L["Garbage Collection Freed"], " ", "|cff00ff00%s|r")
+
+	if lastPanel ~= nil then
+		OnEvent(lastPanel, "ELVUI_COLOR_UPDATE")
+	end
 end
-E["valueColorUpdateFuncs"][ValueColorUpdate] = true
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 P["sysdt"] = {
 	["maxAddons"] = 25,
@@ -453,12 +460,12 @@ local function InjectOptions()
 		E.Options.args.Crackpotx = {
 			type = "group",
 			order = -2,
-			name = L["Plugins by |cff9382c9Crackpotx|r"],
+			name = L["Plugins by |cff0070deCrackpotx|r"],
 			args = {
 				thanks = {
 					type = "description",
 					order = 1,
-					name = L["Thanks for using and supporting my work!  -- |cff9382c9Crackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
+					name = L["Thanks for using and supporting my work!  -- |cff0070deCrackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
 				},
 			},
 		}
@@ -466,7 +473,7 @@ local function InjectOptions()
 		E.Options.args.Crackpotx.args.thanks = {
 			type = "description",
 			order = 1,
-			name = L["Thanks for using and supporting my work!  -- |cff9382c9Crackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
+			name = L["Thanks for using and supporting my work!  -- |cff0070deCrackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
 		}
 	end
 	
@@ -536,4 +543,4 @@ local function InjectOptions()
 end
 
 EP:RegisterPlugin(..., InjectOptions)
-DT:RegisterDatatext("Improved System", nil, nil, Update, Click, OnEnter, OnLeave)
+DT:RegisterDatatext("Improved System", {"PLAYER_ENTERING_WORLD"}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave)
