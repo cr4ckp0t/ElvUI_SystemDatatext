@@ -428,12 +428,15 @@ end
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
-
-	if event == "PLAYER_ENTERING_WORLD" then
-		Frame.initialize = CreateMenu
-		Frame.displayMode = "MENU"
-	end
 end
+
+function Frame:PLAYER_ENTERING_WORLD()
+	self.initialize = CreateMenu
+	self.displayMode = "MENU"
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+end
+Frame:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
+Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 local function ValueColorUpdate(hex, r, g, b)
 	freedString = join("", hex, "ElvUI|r", " ", L["Garbage Collection Freed"], " ", "|cff00ff00%s|r")
