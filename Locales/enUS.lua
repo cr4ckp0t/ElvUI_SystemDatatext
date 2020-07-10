@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- ElvUI_SystemDatatext By Crackpotx (US, Lightbringer)
+-- ElvUI_SystemDatatext By Crackpot (US, Thrall)
 -------------------------------------------------------------------------------
 local debug = false
 --@debug@

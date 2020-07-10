@@ -546,4 +546,5 @@ local function InjectOptions()
 end
 
 EP:RegisterPlugin(..., InjectOptions)
-DT:RegisterDatatext("Improved System", {"PLAYER_ENTERING_WORLD"}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave)
+DT:RegisterDatatext("System (Improved)", nil, {"PLAYER_ENTERING_WORLD"}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, L["System (Improved)"])
+--DT:RegisterDatatext("Improved System", {"PLAYER_ENTERING_WORLD"}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave)
