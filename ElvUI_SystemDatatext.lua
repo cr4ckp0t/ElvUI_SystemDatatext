@@ -195,13 +195,13 @@ local function OnEnter(self)
 		shown = 0
 		DT.tooltip:AddLine(" ")
 		for i = 1, #cpuTable do
-			if E.db.sysdt.maxAddons - shown <= 1 then break end
 			if (cpuTable[i][4]) then
 				local red = cpuTable[i][3] / totalCPU
 				local green = 1 - red
 				DT.tooltip:AddDoubleLine(cpuTable[i][2], format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
 				shown = shown + 1
-			end						
+			end
+			if E.db.sysdt.maxAddons - shown <= 0 then break end	
 		end
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
