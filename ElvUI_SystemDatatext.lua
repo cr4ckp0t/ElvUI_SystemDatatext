@@ -12,6 +12,7 @@ local ReloadUI = _G["ReloadUI"]
 local GetNumAddOns = _G["GetNumAddOns"]
 local GetAddOnInfo = _G["GetAddOnInfo"]
 local IsAddOnLoaded = _G["IsAddOnLoaded"]
+local InCombatLockdown = _G["InCombatLockdown"]
 local UpdateAddOnMemoryUsage = _G["UpdateAddOnMemoryUsage"]
 local GetAddOnMemoryUsage = _G["GetAddOnMemoryUsage"]
 local UpdateAddOnCPUUsage = _G["UpdateAddOnCPUUsage"]
@@ -151,6 +152,7 @@ local function UpdateCPU()
 end
 
 local function OnEnter(self)
+	if (E.db.sysdt.disableCombat and InCombatLockdown()) then return end
 	DT:SetupTooltip(self)
 	enteredFrame = true
 	
@@ -456,6 +458,7 @@ P["sysdt"] = {
 	["announceFreed"] = true,
 	["showElvui"] = true,
 	["showElvuict"] = true,
+	["disableCombat"] = true,
 }
 
 local function InjectOptions()
@@ -540,6 +543,12 @@ local function InjectOptions()
 				order = 8,
 				name = L["Show ECT"],
 				desc = L["Add ElvUI Chat Tweaks Config option to the micro menu."],
+			},
+			disableCombat = {
+				type = "toggle",
+				order = 9,
+				name = L["Disable in Combat"],
+				desc = L["Disable showing tooltip in combat."],
 			},
 		}
 	}
