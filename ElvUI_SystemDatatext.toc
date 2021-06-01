@@ -1,7 +1,7 @@
-## Interface: 90005
-## Author: Crackpotx
-## Title: |cff1784d1ElvUI|r System Datatext
-## Version: 3.0.4
+## Interface: 20501
+## Author: Crackpot
+## Title: |cff1784d1ElvUI|r System Datatext - BCC
+## Version: 1.0.0
 ## Notes: An improved system datatext.
 ## RequiredDeps: ElvUI
 
