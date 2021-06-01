@@ -1,7 +1,7 @@
 ## Interface: 20501
 ## Author: Crackpot
 ## Title: |cff1784d1ElvUI|r System Datatext - BCC
-## Version: 1.0.0
+## Version: 1.0.1-bcc
 ## Notes: An improved system datatext.
 ## RequiredDeps: ElvUI
 
