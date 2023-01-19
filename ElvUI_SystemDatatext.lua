@@ -57,7 +57,6 @@ local statusColors = {
 
 local Frame = CreateFrame("Frame", "ElvUI_SystemDatatext", E.UIParent, "UIDropDownMenuTemplate")
 local enteredFrame = false
-local lastPanel
 local bandwidthString = "%.2f Mbps"
 local percentageString = "%.2f%%"
 local homeLatencyString = "%d ms"
@@ -157,18 +156,21 @@ local function OnEnter(self)
 	enteredFrame = true
 	
 	local cpuProfiling = GetCVar("scriptProfile") == "1"
-	local bandwidth = GetAvailableBandwidth()
+	
 	local _, _, home_latency, world_latency = GetNetStats() 
 	local shown = 0
 	
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, home_latency), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 	DT.tooltip:AddDoubleLine(L["World Latency:"], format(homeLatencyString, world_latency), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
-	if bandwidth ~= 0 then
-		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
-		DT.tooltip:AddLine(" ")
+	
+	-- check if you're downloading in the background
+	if GetFileStreamingStatus() ~= 0 or GetBackgroundLoadingStatus() ~= 0 then
+		local bandwidth = GetAvailableBandwidth()
+		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, GetAvailableBandwidth()), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() * 100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 	end
 	
+	DT.tooltip:AddLine(" ")
 	DT.tooltip:AddDoubleLine(L["Loaded Addons:"], GetNumLoadedAddons(), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 	DT.tooltip:AddDoubleLine(L["Total Addons:"], GetNumAddOns(), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 	
@@ -428,10 +430,6 @@ local function CreateMenu(self, level)
 	end
 end
 
-local function OnEvent(self, event, ...)
-	lastPanel = self
-end
-
 function Frame:PLAYER_ENTERING_WORLD()
 	self.initialize = CreateMenu
 	self.displayMode = "MENU"
@@ -440,14 +438,9 @@ end
 Frame:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(self, hex, r, g, b)
 	freedString = join("", hex, "ElvUI|r", " ", L["Garbage Collection Freed"], " ", "|cff00ff00%s|r")
-
-	if lastPanel ~= nil then
-		OnEvent(lastPanel, "ELVUI_COLOR_UPDATE")
-	end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 P["sysdt"] = {
 	["maxAddons"] = 25,
@@ -555,5 +548,4 @@ local function InjectOptions()
 end
 
 EP:RegisterPlugin(..., InjectOptions)
-DT:RegisterDatatext("System (Improved)", nil, {"PLAYER_ENTERING_WORLD"}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, L["System (Improved)"])
---DT:RegisterDatatext("Improved System", {"PLAYER_ENTERING_WORLD"}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave)
+DT:RegisterDatatext("System (Improved)", nil, {"PLAYER_ENTERING_WORLD"}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, L["System (Improved)"], nil, ValueColorUpdate)
