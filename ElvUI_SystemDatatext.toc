@@ -1,7 +1,7 @@
-## Interface: 100002
+## Interface: 100005
 ## Author: Crackpot
 ## Title: |cff1784d1ElvUI|r System Datatext
-## Version: 3.0.15-retail
+## Version: 3.0.16-retail
 ## Notes: An improved system datatext.
 ## RequiredDeps: ElvUI
 
@@ -22,6 +22,7 @@ Locales\zhCN.lua
 Locales\zhTW.lua
 
 ElvUI_SystemDatatext.lua
+
 
 
 
