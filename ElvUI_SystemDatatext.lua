@@ -5,41 +5,42 @@ local E, _, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, Profi
 local DT = E:GetModule("DataTexts")
 local L = E.Libs.ACL:GetLocale("ElvUI_SystemDatatext", false)
 local EP = E.Libs.EP
+local ACH = E.Libs.ACH
 
-local unpack = _G["unpack"]
-local CreateFrame = _G["CreateFrame"]
-local ReloadUI = _G["ReloadUI"]
-local GetNumAddOns = _G["GetNumAddOns"]
-local GetAddOnInfo = _G["GetAddOnInfo"]
-local IsAddOnLoaded = _G["IsAddOnLoaded"]
-local InCombatLockdown = _G["InCombatLockdown"]
-local UpdateAddOnMemoryUsage = _G["UpdateAddOnMemoryUsage"]
-local GetAddOnMemoryUsage = _G["GetAddOnMemoryUsage"]
-local UpdateAddOnCPUUsage = _G["UpdateAddOnCPUUsage"]
-local GetAddOnCPUUsage = _G["GetAddOnCPUUsage"]
-local GetCVar = _G["GetCVar"]
-local GetAvailableBandwidth = _G["GetAvailableBandwidth"]
-local GetNetStats = _G["GetNetStats"]
-local GetDownloadedPercentage = _G["GetDownloadedPercentage"]
-local IsShiftKeyDown = _G["IsShiftKeyDown"]
-local GetFramerate = _G["GetFramerate"]
-local collectgarbage = _G["collectgarbage"]
-local StaticPopup_Show = _G["StaticPopup_Show"]
-local ToggleDropDownMenu = _G["ToggleDropDownMenu"]
-local UIDropDownMenu_AddButton = _G["UIDropDownMenu_AddButton"]
-local ToggleFrame = _G["ToggleFrame"]
-local LoadAddOn = _G["LoadAddOn"]
-local ToggleAchievementFrame = _G["ToggleAchievementFrame"]
-local ToggleQuestLog = _G["ToggleQuestLog"]
-local ToggleGuildFrame = _G["ToggleGuildFrame"]
-local ToggleLFDParentFrame = _G["ToggleLFDParentFrame"]
-local ToggleCollectionsJournal = _G["ToggleCollectionsJournal"]
-local ToggleEncounterJournal = _G["ToggleEncounterJournal"]
-local GetCurrentRegionName = _G["GetCurrentRegionName"]
-local ToggleHelpFrame = _G["ToggleHelpFrame"]
-local ToggleStoreUI = _G["ToggleStoreUI"]
-local HideUIPanel = _G["HideUIPanel"]
-local ShowUIPanel = _G["ShowUIPanel"]
+local unpack = _G.unpack
+local CreateFrame = _G.CreateFrame
+local ReloadUI = _G.ReloadUI
+local GetNumAddOns = _G.GetNumAddOns
+local GetAddOnInfo = _G.GetAddOnInfo
+local IsAddOnLoaded = _G.IsAddOnLoaded
+local InCombatLockdown = _G.InCombatLockdown
+local UpdateAddOnMemoryUsage = _G.UpdateAddOnMemoryUsage
+local GetAddOnMemoryUsage = _G.GetAddOnMemoryUsage
+local UpdateAddOnCPUUsage = _G.UpdateAddOnCPUUsage
+local GetAddOnCPUUsage = _G.GetAddOnCPUUsage
+local GetCVar = _G.GetCVar
+local GetAvailableBandwidth = _G.GetAvailableBandwidth
+local GetNetStats = _G.GetNetStats
+local GetDownloadedPercentage = _G.GetDownloadedPercentage
+local IsShiftKeyDown = _G.IsShiftKeyDown
+local GetFramerate = _G.GetFramerate
+local collectgarbage = _G.collectgarbage
+local StaticPopup_Show = _G.StaticPopup_Show
+local ToggleDropDownMenu = _G.ToggleDropDownMenu
+local UIDropDownMenu_AddButton = _G.UIDropDownMenu_AddButton
+local ToggleFrame = _G.ToggleFrame
+local LoadAddOn = _G.LoadAddOn
+local ToggleAchievementFrame = _G.ToggleAchievementFrame
+local ToggleQuestLog = _G.ToggleQuestLog
+local ToggleGuildFrame = _G.ToggleGuildFrame
+local ToggleLFDParentFrame = _G.ToggleLFDParentFrame
+local ToggleCollectionsJournal = _G.ToggleCollectionsJournal
+local ToggleEncounterJournal = _G.ToggleEncounterJournal
+local GetCurrentRegionName = _G.GetCurrentRegionName
+local ToggleHelpFrame = _G.ToggleHelpFrame
+local ToggleStoreUI = _G.ToggleStoreUI
+local HideUIPanel = _G.HideUIPanel
+local ShowUIPanel = _G.ShowUIPanel
 
 local format = string.format
 local sort = table.sort
@@ -456,95 +457,22 @@ P["sysdt"] = {
 
 local function InjectOptions()
 	if not E.Options.args.Crackpotx then
-		E.Options.args.Crackpotx = {
-			type = "group",
-			order = -2,
-			name = L["Plugins by |cff0070deCrackpotx|r"],
-			args = {
-				thanks = {
-					type = "description",
-					order = 1,
-					name = L["Thanks for using and supporting my work!  -- |cff0070deCrackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
-				},
-			},
-		}
-	elseif not E.Options.args.Crackpotx.args.thanks then
-		E.Options.args.Crackpotx.args.thanks = {
-			type = "description",
-			order = 1,
-			name = L["Thanks for using and supporting my work!  -- |cff0070deCrackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."],
-		}
+		E.Options.args.Crackpotx = ACH:Group(L["Plugins by |cff0070deCrackpotx|r"])
 	end
-	
-	-- inject our config into elvui's config window
-	E.Options.args.Crackpotx.args.impsysdt = {
-		type = "group",
-		name = L["Improved System Datatext"],
-		get = function(info) return E.db.sysdt[info[#info]] end,
-		set = function(info, value) E.db.sysdt[info[#info]] = value; DT:LoadDataTexts() end,
-		args = {
-			maxAddons = {
-				type = "range",
-				order = 1,
-				name = L["Max Addons"],
-				desc = L["Maximum number of addons to show in the tooltip."],
-				min = 1, max = 50, step = 1,
-			},
-			announceFreed = {
-				type = "toggle",
-				order = 2,
-				name = L["Announce Freed"],
-				desc = L["Announce how much memory was freed by the garbage collection."],
-			},
-			showFPS = {
-				type = "toggle",
-				order = 3,
-				name = L["Show FPS"],
-				desc = L["Show FPS on the datatext."],
-			},
-			showMemory = {
-				type = "toggle",
-				order = 4,
-				name = L["Show Memory"],
-				desc = L["Show total addon memory on the datatext."]
-			},
-			showMS = {
-				type = "toggle",
-				order = 5,
-				name = L["Show Latency"],
-				desc = L["Show latency on the datatext."],
-			},
-			latency = {
-				type = "select",
-				order = 6,
-				name = L["Latency Type"],
-				desc = L["Display world or home latency on the datatext.  Home latency refers to your realm server.  World latency refers to the current world server."],
-				disabled = function() return not E.db.sysdt.showMS end,
-				values = {
-					["home"] = L["Home"],
-					["world"] = L["World"],
-				}
-			},
-			showElvui = {
-				type = "toggle",
-				order = 7,
-				name = L["Show ElvUI"],
-				desc = L["Add ElvUI Config option to the micro menu."],
-			},
-			showElvuict = {
-				type = "toggle",
-				order = 8,
-				name = L["Show ECT"],
-				desc = L["Add ElvUI Chat Tweaks Config option to the micro menu."],
-			},
-			disableCombat = {
-				type = "toggle",
-				order = 9,
-				name = L["Disable in Combat"],
-				desc = L["Disable showing tooltip in combat."],
-			},
-		}
-	}
+	if not E.Options.args.Crackpotx.args.thanks then
+		E.Options.args.Crackpotx.args.thanks = ACH:Description(L["Thanks for using and supporting my work!  -- |cff0070deCrackpotx|r\n\n|cffff0000If you find any bugs, or have any suggestions for any of my addons, please open a ticket at that particular addon's page on CurseForge."], 1)
+	end
+
+	E.Options.args.Crackpotx.args.impsysdt = ACH:Group(L["Improved System Datatext"], nil, nil, nil, function(info) return E.db.sysdt[info[#info]] end, function(info, value) E.db.sysdt[info[#info]] = value; DT:ForceUpdate_DataText("System (Improved)") end)
+	E.Options.args.Crackpotx.args.impsysdt.args.maxAddons = ACH:Range(L["Max Addons"], L["Maximum number of addons to show in the tooltip."], 1, {min = 1, max = 50, step = 1})
+	E.Options.args.Crackpotx.args.impsysdt.args.announceFreed = ACH:Toggle(L["Announce Freed"], L["Announce how much memory was freed by the garbage collection."], 2)
+	E.Options.args.Crackpotx.args.impsysdt.args.showFPS = ACH:Toggle(L["Show FPS"], L["Show FPS on the datatext."], 3)
+	E.Options.args.Crackpotx.args.impsysdt.args.showMemory = ACH:Toggle(L["Show Memory"], L["Show total addon memory on the datatext."], 4)
+	E.Options.args.Crackpotx.args.impsysdt.args.showMS = ACH:Toggle(L["Show Latency"], L["Show latency on the datatext."], 5)
+	E.Options.args.Crackpotx.args.impsysdt.args.latency = ACH:Select(L["Latency Type"], L["Display world or home latency on the datatext.  Home latency refers to your realm server.  World latency refers to the current world server."], 6, {["home"] = L["Home"], ["world"] = L["World"]}, nil, nil, nil, nil, function() return not E.db.sysdt.showMS end)
+	E.Options.args.Crackpotx.args.impsysdt.args.showElvui = ACH:Toggle(L["Show ElvUI"], L["Add ElvUI Config option to the micro menu."], 7)
+	E.Options.args.Crackpotx.args.impsysdt.args.showElvuict = ACH:Toggle(L["Show ECT"], L["Add ElvUI Chat Tweaks Config option to the micro menu."], 8, nil, nil, nil, nil, nil, nil, function() return not (IsAddOnLoaded("ElvUI_ChatTweaks") and ElvUI_ChatTweaks) end)
+	E.Options.args.Crackpotx.args.impsysdt.args.disableCombat = ACH:Toggle(L["Disable in Combat"], L["Disable showing tooltip in combat."], 9)
 end
 
 EP:RegisterPlugin(..., InjectOptions)

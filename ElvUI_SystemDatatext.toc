@@ -1,7 +1,7 @@
 ## Interface: 100005
 ## Author: Crackpot
 ## Title: |cff1784d1ElvUI|r System Datatext
-## Version: 3.1.0-retail
+## Version: 3.1.1-retail
 ## Notes: An improved system datatext.
 ## RequiredDeps: ElvUI
 
