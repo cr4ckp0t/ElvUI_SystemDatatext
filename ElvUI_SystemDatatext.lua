@@ -186,7 +186,7 @@ local function OnEnter(self)
 	if IsShiftKeyDown() or not cpuProfiling then
 		DT.tooltip:AddLine(" ")
 		for i = 1, #memoryTable do
-			if E.db.sysdt.maxAddons - shown <= 1 then break end
+			if E.db.sysdt.maxAddons - shown == 0 then break end
 			if (memoryTable[i][4]) then
 				local red = memoryTable[i][3] / totalMemory
 				local green = 1 - red
