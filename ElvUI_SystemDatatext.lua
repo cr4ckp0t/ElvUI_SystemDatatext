@@ -100,8 +100,8 @@ local function RebuildAddonList()
 	memoryTable = {}
 	cpuTable = {}
 	for i = 1, addonCount do
-		memoryTable[i] = {i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i)}
-		cpuTable[i] = {i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i)}
+		memoryTable[i] = {i, select(2, C_AddOns.GetAddonInfo(i)), 0, IsAddOnLoaded(i)}
+		cpuTable[i] = {i, select(2, C_AddOns.GetAddonInfo(i)), 0, IsAddOnLoaded(i)}
 	end
 end
 
