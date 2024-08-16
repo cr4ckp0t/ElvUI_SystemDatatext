@@ -94,7 +94,7 @@ local function FormatMemory(memory)
 end
 
 local function RebuildAddonList()
-	local addonCount = GetNumAddOns()
+	local addonCount = C_AddOns.GetNumAddOns()
 	if addonCount == #memoryTable then return end
 	
 	memoryTable = {}
@@ -107,7 +107,7 @@ end
 
 local function GetNumLoadedAddons()
 	local loaded = 0
-	for i = 1, GetNumAddOns() do
+	for i = 1, C_AddOns.GetNumAddOns() do
 		if IsAddOnLoaded(i) then loaded = loaded + 1 end
 	end
 	return loaded
@@ -173,7 +173,7 @@ local function OnEnter(self)
 	
 	DT.tooltip:AddLine(" ")
 	DT.tooltip:AddDoubleLine(L["Loaded Addons:"], GetNumLoadedAddons(), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
-	DT.tooltip:AddDoubleLine(L["Total Addons:"], GetNumAddOns(), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L["Total Addons:"], C_AddOns.GetNumAddOns(), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 	
 	local totalMemory = UpdateMemory()
 	local totalCPU = nil
