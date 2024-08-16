@@ -94,21 +94,21 @@ local function FormatMemory(memory)
 end
 
 local function RebuildAddonList()
-	local addonCount = GetNumAddOns()
+	local addonCount = C_AddOns.GetNumAddOns()
 	if addonCount == #memoryTable then return end
 	
 	memoryTable = {}
 	cpuTable = {}
 	for i = 1, addonCount do
-		memoryTable[i] = {i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i)}
-		cpuTable[i] = {i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i)}
+		memoryTable[i] = {i, select(2, C_AddOns.GetAddOnInfo(i)), 0, C_AddOns.IsAddOnLoaded(i)}
+		cpuTable[i] = {i, select(2, C_AddOns.GetAddOnInfo(i)), 0, C_AddOns.IsAddOnLoaded(i)}
 	end
 end
 
 local function GetNumLoadedAddons()
 	local loaded = 0
-	for i = 1, GetNumAddOns() do
-		if IsAddOnLoaded(i) then loaded = loaded + 1 end
+	for i = 1, C_AddOns.GetNumAddOns() do
+		if C_AddOns.IsAddOnLoaded(i) then loaded = loaded + 1 end
 	end
 	return loaded
 end
@@ -173,7 +173,7 @@ local function OnEnter(self)
 	
 	DT.tooltip:AddLine(" ")
 	DT.tooltip:AddDoubleLine(L["Loaded Addons:"], GetNumLoadedAddons(), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
-	DT.tooltip:AddDoubleLine(L["Total Addons:"], GetNumAddOns(), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L["Total Addons:"], C_AddOns.GetNumAddOns(), 0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 	
 	local totalMemory = UpdateMemory()
 	local totalCPU = nil
@@ -420,7 +420,7 @@ local function CreateMenu(self, level)
 		})
 	end
 
-	if E.db.sysdt.showElvuict and IsAddOnLoaded("ElvUI_ChatTweaks") and ElvUI_ChatTweaks then
+	if E.db.sysdt.showElvuict and C_AddOns.IsAddOnLoaded("ElvUI_ChatTweaks") and ElvUI_ChatTweaks then
 		UIDropDownMenu_AddButton({
 			hasArrow = false,
 			notCheckable = true,
@@ -471,7 +471,7 @@ local function InjectOptions()
 	E.Options.args.Crackpotx.args.impsysdt.args.showMS = ACH:Toggle(L["Show Latency"], L["Show latency on the datatext."], 5)
 	E.Options.args.Crackpotx.args.impsysdt.args.latency = ACH:Select(L["Latency Type"], L["Display world or home latency on the datatext.  Home latency refers to your realm server.  World latency refers to the current world server."], 6, {["home"] = L["Home"], ["world"] = L["World"]}, nil, nil, nil, nil, function() return not E.db.sysdt.showMS end)
 	E.Options.args.Crackpotx.args.impsysdt.args.showElvui = ACH:Toggle(L["Show ElvUI"], L["Add ElvUI Config option to the micro menu."], 7)
-	E.Options.args.Crackpotx.args.impsysdt.args.showElvuict = ACH:Toggle(L["Show ECT"], L["Add ElvUI Chat Tweaks Config option to the micro menu."], 8, nil, nil, nil, nil, nil, nil, function() return not (IsAddOnLoaded("ElvUI_ChatTweaks") and ElvUI_ChatTweaks) end)
+	E.Options.args.Crackpotx.args.impsysdt.args.showElvuict = ACH:Toggle(L["Show ECT"], L["Add ElvUI Chat Tweaks Config option to the micro menu."], 8, nil, nil, nil, nil, nil, nil, function() return not (C_AddOns.IsAddOnLoaded("ElvUI_ChatTweaks") and ElvUI_ChatTweaks) end)
 	E.Options.args.Crackpotx.args.impsysdt.args.disableCombat = ACH:Toggle(L["Disable in Combat"], L["Disable showing tooltip in combat."], 9)
 end
 
