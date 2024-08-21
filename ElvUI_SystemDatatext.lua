@@ -10,9 +10,9 @@ local ACH = E.Libs.ACH
 local unpack = _G.unpack
 local CreateFrame = _G.CreateFrame
 local ReloadUI = _G.ReloadUI
-local GetNumAddOns = _G.GetNumAddOns
-local GetAddOnInfo = _G.GetAddOnInfo
-local IsAddOnLoaded = _G.IsAddOnLoaded
+local GetNumAddOns = C_AddOns.GetNumAddOns
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local InCombatLockdown = _G.InCombatLockdown
 local UpdateAddOnMemoryUsage = _G.UpdateAddOnMemoryUsage
 local GetAddOnMemoryUsage = _G.GetAddOnMemoryUsage
@@ -29,7 +29,7 @@ local StaticPopup_Show = _G.StaticPopup_Show
 local ToggleDropDownMenu = _G.ToggleDropDownMenu
 local UIDropDownMenu_AddButton = _G.UIDropDownMenu_AddButton
 local ToggleFrame = _G.ToggleFrame
-local LoadAddOn = _G.LoadAddOn
+local LoadAddOn = C_AddOns.LoadAddOn
 local ToggleAchievementFrame = _G.ToggleAchievementFrame
 local ToggleQuestLog = _G.ToggleQuestLog
 local ToggleGuildFrame = _G.ToggleGuildFrame
@@ -416,7 +416,7 @@ local function CreateMenu(self, level)
 			notCheckable = true,
 			colorCode = "|cffffffff",
 			text = L["ElvUI Config"],
-			func = function() E:ToggleOptionsUI() end,
+			func = function() E:ToggleOptions() end,
 		})
 	end
 
