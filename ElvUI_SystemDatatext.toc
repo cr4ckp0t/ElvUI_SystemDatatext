@@ -1,8 +1,8 @@
-## Interface: 100206
+## Interface: 110002
 ## Author: Crackpot
 ## Title: ElvUI System Datatext
 ## IconTexture: Interface\AddOns\ElvUI_SystemDatatext\Media\crackpot
-## Version: 3.1.11-retail
+## Version: 3.1.12-retail
 ## Notes: An improved system datatext.
 ## RequiredDeps: ElvUI
 
@@ -19,6 +19,7 @@ Locales\zhCN.lua
 Locales\zhTW.lua
 
 ElvUI_SystemDatatext.lua
+
 
 
 
